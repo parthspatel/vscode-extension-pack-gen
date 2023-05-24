@@ -1,6 +1,6 @@
 use std::collections::{HashMap, HashSet};
 use serde::{Deserialize, Serialize};
-use crate::pack::{Module, Packages};
+use crate::pack_config::{Module, PackConfig};
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -28,8 +28,8 @@ pub struct PackageJson {
     pub overwrite: bool,
 }
 
-impl From<Packages> for Vec<PackageJson> {
-    fn from(pack: Packages) -> Self {
+impl From<PackConfig> for Vec<PackageJson> {
+    fn from(pack: PackConfig) -> Self {
         pack.modules.into_iter().map(|module: Module|
             PackageJson {
                 name: format!("{}{}", pack.common.name_prefix.clone(), module.name),

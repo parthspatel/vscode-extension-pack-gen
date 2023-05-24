@@ -1,0 +1,176 @@
+common:
+  version: 0.0.1
+  overwrite: true
+  author: parthspatel
+  publisher: parthspatel
+  license: MIT
+  engines:
+    vscode: ^1.78.0
+  categories:
+  - Extension Packs
+  namePrefix: zz-
+  displayNamePrefix: ZZ
+  iconDir: icons
+  icon: common.png
+
+modules:
+  - name: base
+    displayName: Base
+    description: Base extensions for all my projects
+    packages:
+      - VisualStudioExptTeam.vscodeintellicode
+      - hbenl.vscode-test-explorer
+      - VisualStudioExptTeam.intellicode-api-usage-examples
+      - ms-vscode.test-adapter-converter
+      - formulahendry.code-runner
+      - GitHub.codespaces
+      - GitHub.copilot
+      - esbenp.prettier-vscode
+      - ms-vscode-remote.vscode-remote-extensionpack
+      - ritwickdey.LiveServer
+
+      - redhat.vscode-yaml
+      - yzhang.markdown-all-in-one
+      - redhat.vscode-xml
+      - bungcip.better-toml
+
+  - name: themes
+    displayName: Themes
+    description: Themes for VSCode
+    categories:
+      - Themes
+    packages:
+      - k--kato.intellij-idea-keybindings
+      - PKief.material-icon-theme
+      - Catppuccin.catppuccin-vsc
+      - mateocerquetella.xcode-12-theme
+      - zhuangtongfa.material-theme
+      - mutantdino.resourcemonitor
+
+  - name: git
+    displayName: Git
+    description: Git extensions for VSCode
+    categories:
+      - SCM Providers
+    packages:
+      - GitHub.vscode-pull-request-github
+      - GitHub.remotehub
+      - GitHub.vscode-github-actions
+      - eamodio.gitlens
+      - donjayamanne.githistory
+      - codezombiech.gitignore
+
+  - name: live-share
+    displayName: Live Share
+    description: Live Share extensions for VSCode
+    packages:
+      - MS-vsliveshare.vsliveshare
+      - hbenl.vscode-test-explorer-liveshare
+
+  - name: cloud
+    displayName: Cloud
+    description: Cloud extensions for VSCode
+    categories:
+      - Programming Languages
+      - Language Packs
+    packages:
+      - VisualStudioExptTeam.vscodeintellicode
+      - VisualStudioExptTeam.intellicode-api-usage-examples
+      - ms-azuretools.vscode-docker
+      - ms-kubernetes-tools.vscode-kubernetes-tools
+      - mindaro.mindaro
+      - HashiCorp.terraform
+
+  - name: python
+    displayName: Python
+    description: Python extensions for VSCode
+    categories:
+      - Programming Languages
+      - Language Packs
+    packages:
+      - VisualStudioExptTeam.vscodeintellicode
+      - VisualStudioExptTeam.intellicode-api-usage-examples
+      - hbenl.vscode-test-explorer
+      - ms-vscode.test-adapter-converter
+      - ms-python.python
+      - ms-python.vscode-pylance
+      - ms-python.isort
+      - njpwerner.autodocstring
+      - bungcip.better-toml
+      - ms-python.black-formatter
+      - LittleFoxTeam.vscode-python-test-adapter
+      - matangover.mypy
+
+  - name: jupyter
+    displayName: Jupyter
+    description: Jupyter extensions for VSCode
+    categories:
+      - Data Science
+    packages:
+      - VisualStudioExptTeam.vscodeintellicode
+      - VisualStudioExptTeam.intellicode-api-usage-examples
+      - ms-toolsai.jupyter
+      - ms-toolsai.jupyter-keymap
+      - ms-toolsai.jupyter-renderers
+      - ms-toolsai.vscode-jupyter-slideshow
+
+  - name: java
+    displayName: Java
+    description: Java extensions for VSCode
+    categories:
+      - Programming Languages
+      - Language Packs
+    packages:
+      - VisualStudioExptTeam.vscodeintellicode
+      - VisualStudioExptTeam.intellicode-api-usage-examples
+      - hbenl.vscode-test-explorer
+      - ms-vscode.test-adapter-converter
+
+      - redhat.java
+      - vscjava.vscode-java-debug
+      - vscjava.vscode-java-dependency
+      - vscjava.vscode-java-test
+      - vscjava.vscode-maven
+      - vscjava.vscode-gradle
+      - vscjava.vscode-java-pack
+
+  - name: scala
+    displayName: Scala
+    description: Scala extensions for VSCode
+    categories:
+      - Programming Languages
+      - Language Packs
+    packages:
+      - VisualStudioExptTeam.vscodeintellicode
+      - VisualStudioExptTeam.intellicode-api-usage-examples
+      - hbenl.vscode-test-explorer
+      - ms-vscode.test-adapter-converter
+      - scala-lang.scala
+      - scalameta.metals
+      - lightbend.vscode-sbt-scala
+
+  - name: rust
+    displayName: Rust
+    description: Rust extensions for VSCode
+    categories:
+      - Programming Languages
+      - Language Packs
+    activationEvents:
+      - onLanguage:rust
+      - workspaceContains:.cargo
+      - workspaceContains:Cargo.toml
+      - workspaceContains:Cargo.lock
+      - workspaceContains:*.rs
+    packages:
+      - VisualStudioExptTeam.vscodeintellicode
+      - VisualStudioExptTeam.intellicode-api-usage-examples
+      - hbenl.vscode-test-explorer
+      - ms-vscode.test-adapter-converter
+      - rust-lang.rust-analyzer
+      - swellaby.vscode-rust-test-adapter
+      - tamasfe.even-better-toml
+      - bungcip.better-toml
+      - serayuzgur.crates
+      - vadimcn.vscode-lldb
+
+      # - dustypomerleau.rust-syntax # ???

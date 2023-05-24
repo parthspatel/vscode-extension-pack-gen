@@ -1,6 +1,7 @@
-use image::{DynamicImage, GenericImageView, ImageFormat, Rgba, RgbaImage};
+use image::{DynamicImage, GenericImageView, ImageFormat, Pixel, Rgba, RgbaImage};
 use std::cmp::{max, min};
 use std::path::PathBuf;
+use crate::clone_with::CloneWith;
 
 pub enum OverlayPosition {
     TopRight,
@@ -9,7 +10,7 @@ pub enum OverlayPosition {
     BottomLeft,
 }
 
-#[derive(Debug)]
+#[derive(Debug, CloneWith)]
 pub struct IconOverlay {
     pub overlay_position: OverlayPosition,
     pub padding_percent: f32,
@@ -17,19 +18,19 @@ pub struct IconOverlay {
 
 impl Default for IconOverlay {
     fn default() -> Self {
-        IconOverlay::new(OverlayPosition::BottomRight, 0.05)
+        IconOverlay {
+            overlay_position: OverlayPosition::BottomRight,
+            padding_percent: 0.05,
+        }
     }
 }
 
 impl IconOverlay {
-
-    fn with_overlay_position(mut self, overlay_position: OverlayPosition) -> Self {
-        let new = self.clone();
-        new.overlay_position = overlay_position;
-        new
+    pub fn new() -> Self {
+        IconOverlay::default()
     }
 
-    fn overlay(
+    pub fn overlay(
         &self,
         base_path: &PathBuf,
         overlay_path: &PathBuf,
