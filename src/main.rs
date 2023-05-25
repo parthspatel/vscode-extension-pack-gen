@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::{BufReader, Write};
+use std::{fs, panic};
 use std::path::{Path, PathBuf};
 use std::time::Instant;
 use crate::pack_config::{Module, PackConfig};
@@ -9,7 +10,6 @@ use crate::package_json::PackageJson;
 mod pack_config;
 mod package_json;
 mod icon_overlay;
-mod clone_with;
 
 #[allow(dead_code)]
 fn sample_file() {
@@ -18,6 +18,7 @@ fn sample_file() {
     let sample_license_path = Some("/Users/parth/Documents/projects/vscode-extension-pack-gen/sample/LICENSE");
     let clear_output_dir = true;
     let install = true;
+    let dry_run = true;
 
     let package_jsons_dir_name = "package-json";
     let extension_pack_dir_name = "extension-pack";
@@ -32,9 +33,34 @@ fn sample_file() {
         pack
     }).unwrap();
 
+    println!("> Checking pack for multiple inheritance");
+    match pack.find_multiple_inheritance() {
+        Ok(_) => { println!("> No multiple inheritance found"); }
+        Err(errors) => {
+            let mut msg = ":\n> Multiple inheritance found:".to_string();
+            for error in errors {
+                msg.push_str(&format!("\n\t> {}", error));
+            }
+            panic!("{msg}");
+        }
+    }
+
     // prepare the icons
     let icon_overlay = icon_overlay::IconOverlay::new();
-
+    let common_icon_path = PathBuf::from(&pack.common.icon);
+    let icon_dir = PathBuf::from(&pack.common.icon_dir);
+    // load the paths from icon_dir and extract the name from the file path `icon_{name}.png`
+    let icon_paths = std::fs::read_dir(&icon_dir)
+        .expect(&format!("Failed to read directory {}", icon_dir.display().to_string()))
+        .map(|entry| entry.unwrap().path())
+        .filter(|path| path.is_file())
+        .filter(|path| path.extension().unwrap_or_default() == "png")
+        .map(|path| {
+            let file_name = path.file_name().unwrap().to_str().unwrap();
+            let name = file_name.strip_prefix("icon_").unwrap().strip_suffix(".png").unwrap();
+            (name.to_string(), path)
+        })
+        .collect::<HashMap<String, PathBuf>>();
 
     // convert the pack into a package.json
     let package_jsons: Vec<PackageJson> = pack.into();
@@ -47,10 +73,24 @@ fn sample_file() {
 
     // write the package.json to the output path
     let mut package_dirs: Vec<(PathBuf, String, String)> = vec![];
-    for package_json in package_jsons {
+    for mut package_json in package_jsons {
         let package_dir = Path::new(&sample_output_path).join(&package_jsons_dir_name).join(&package_json.name);
         let package_json_path = package_dir.clone().join("package.json");
+        let package_icon_path = package_dir.clone().join("icon.png");
 
+        // overlay the icon or copy the common icon
+        icon_paths.get(&package_json.name).map(|icon_path| {
+            icon_overlay.overlay(&common_icon_path, &icon_path, &package_icon_path).unwrap()
+        })
+            .or_else(|| {
+                fs::copy(&common_icon_path, &package_icon_path).unwrap();
+                Some(())
+            }).unwrap()
+        ;
+
+        package_json.icon = format!("icon.png");
+
+        // create the package.json
         if !package_json.overwrite && package_json_path.exists() {
             println!("> Skipping {} already exists at {}", package_json.name, package_json_path.display());
             continue;
@@ -118,17 +158,24 @@ fn sample_file() {
             script
         });
         let install_script_path = Path::new(&sample_output_path).join("install.sh");
-        let mut install_script_file = File::create(install_script_path).unwrap();
+        let mut install_script_file = File::create(install_script_path.clone()).unwrap();
         install_script_file.write_all(install_script.as_bytes()).unwrap();
 
-        println!("> Running install script");
-        let output = std::process::Command::new("sh")
-            .arg("install.sh")
-            .current_dir(&sample_output_path)
-            .output()
-            .expect("> ERROR: Failed to install modules");
-        output.stdout.iter().for_each(|byte| print!("{}", *byte as char));
-        output.stderr.iter().for_each(|byte| print!("{}", *byte as char));
+        if dry_run {
+            let path = install_script_path.clone().display().to_string();
+            println!("> Dry run, skipping install");
+            println!("> Run the following command to install the extensions:");
+            println!("> sh {}", path)
+        } else {
+            println!("> Running install script");
+            let output = std::process::Command::new("sh")
+                .arg("install.sh")
+                .current_dir(&sample_output_path)
+                .output()
+                .expect("> ERROR: Failed to install modules");
+            output.stdout.iter().for_each(|byte| print!("{}", *byte as char));
+            output.stderr.iter().for_each(|byte| print!("{}", *byte as char));
+        }
     }
 
     println!("> Done!!!");
@@ -136,9 +183,8 @@ fn sample_file() {
 
 
 fn main() {
-    // let start = Instant::now();
-    // sample_file();
-    // let duration = start.elapsed();
-    // println!("> Took: {:?}", duration);
-    clone_with::main();
+    let start = Instant::now();
+    sample_file();
+    let duration = start.elapsed();
+    println!("> Took: {:?}", duration);
 }

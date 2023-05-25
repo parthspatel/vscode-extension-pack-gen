@@ -16,6 +16,10 @@ pub struct PackageJson {
     pub publisher: String,
     #[serde(skip_serializing_if = "String::is_empty")]
     pub license: String,
+    #[serde(skip_serializing_if = "String::is_empty")]
+    pub repository: String,
+    #[serde(skip_serializing_if = "String::is_empty")]
+    pub icon: String,
     #[serde(skip_serializing_if = "HashMap::is_empty")]
     pub engines: HashMap<String, String>,
     #[serde(skip_serializing_if = "Vec::is_empty")]
@@ -39,6 +43,8 @@ impl From<PackConfig> for Vec<PackageJson> {
                 author: pack.common.author.clone(),
                 publisher: pack.common.publisher.clone(),
                 license: pack.common.license.clone(),
+                repository: pack.common.repository.clone(),
+                icon: "".to_string(),
                 engines: pack.common.engines.clone(),
                 categories: merge_and_deduplicate(vec![
                     pack.common.categories.clone(),

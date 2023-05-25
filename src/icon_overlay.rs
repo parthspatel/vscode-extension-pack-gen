@@ -1,8 +1,9 @@
 use image::{DynamicImage, GenericImageView, ImageFormat, Pixel, Rgba, RgbaImage};
 use std::cmp::{max, min};
 use std::path::PathBuf;
-use crate::clone_with::CloneWith;
+use clone_with::CloneWith;
 
+#[derive(Debug, Clone, Copy)]
 pub enum OverlayPosition {
     TopRight,
     TopLeft,
@@ -10,7 +11,7 @@ pub enum OverlayPosition {
     BottomLeft,
 }
 
-#[derive(Debug, CloneWith)]
+#[derive(Debug, Clone, CloneWith)]
 pub struct IconOverlay {
     pub overlay_position: OverlayPosition,
     pub padding_percent: f32,
@@ -79,8 +80,6 @@ impl IconOverlay {
 
         result_image
             .save_with_format(output_path, ImageFormat::Png)
-            .map_err(|e| format!("Failed to save result image: {}", e))?;
-
-        Ok(())
+            .map_err(|e| format!("Failed to save result image: {}", e))
     }
 }

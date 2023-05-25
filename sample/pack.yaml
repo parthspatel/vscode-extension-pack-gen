@@ -1,5 +1,5 @@
 common:
-  version: 0.0.1
+  version: 0.0.2
   overwrite: true
   author: parthspatel
   publisher: parthspatel
@@ -12,6 +12,7 @@ common:
   displayNamePrefix: ZZ
   iconDir: icons
   icon: common.png
+  repository: https://github.com/parthspatel/vscode-extension-pack-gen
 
 modules:
   - name: base
@@ -19,9 +20,7 @@ modules:
     description: Base extensions for all my projects
     packages:
       - VisualStudioExptTeam.vscodeintellicode
-      - hbenl.vscode-test-explorer
       - VisualStudioExptTeam.intellicode-api-usage-examples
-      - ms-vscode.test-adapter-converter
       - formulahendry.code-runner
       - GitHub.codespaces
       - GitHub.copilot
@@ -46,6 +45,15 @@ modules:
       - mateocerquetella.xcode-12-theme
       - zhuangtongfa.material-theme
       - mutantdino.resourcemonitor
+
+  - name: testing
+    displayName: Testing
+    description: Testing extensions for VSCode
+    categories:
+      - Programming Languages
+    packages:
+      - hbenl.vscode-test-explorer
+      - ms-vscode.test-adapter-converter
 
   - name: git
     displayName: Git
@@ -74,8 +82,6 @@ modules:
       - Programming Languages
       - Language Packs
     packages:
-      - VisualStudioExptTeam.vscodeintellicode
-      - VisualStudioExptTeam.intellicode-api-usage-examples
       - ms-azuretools.vscode-docker
       - ms-kubernetes-tools.vscode-kubernetes-tools
       - mindaro.mindaro
@@ -88,15 +94,10 @@ modules:
       - Programming Languages
       - Language Packs
     packages:
-      - VisualStudioExptTeam.vscodeintellicode
-      - VisualStudioExptTeam.intellicode-api-usage-examples
-      - hbenl.vscode-test-explorer
-      - ms-vscode.test-adapter-converter
       - ms-python.python
       - ms-python.vscode-pylance
       - ms-python.isort
       - njpwerner.autodocstring
-      - bungcip.better-toml
       - ms-python.black-formatter
       - LittleFoxTeam.vscode-python-test-adapter
       - matangover.mypy
@@ -107,8 +108,6 @@ modules:
     categories:
       - Data Science
     packages:
-      - VisualStudioExptTeam.vscodeintellicode
-      - VisualStudioExptTeam.intellicode-api-usage-examples
       - ms-toolsai.jupyter
       - ms-toolsai.jupyter-keymap
       - ms-toolsai.jupyter-renderers
@@ -121,11 +120,6 @@ modules:
       - Programming Languages
       - Language Packs
     packages:
-      - VisualStudioExptTeam.vscodeintellicode
-      - VisualStudioExptTeam.intellicode-api-usage-examples
-      - hbenl.vscode-test-explorer
-      - ms-vscode.test-adapter-converter
-
       - redhat.java
       - vscjava.vscode-java-debug
       - vscjava.vscode-java-dependency
@@ -141,10 +135,6 @@ modules:
       - Programming Languages
       - Language Packs
     packages:
-      - VisualStudioExptTeam.vscodeintellicode
-      - VisualStudioExptTeam.intellicode-api-usage-examples
-      - hbenl.vscode-test-explorer
-      - ms-vscode.test-adapter-converter
       - scala-lang.scala
       - scalameta.metals
       - lightbend.vscode-sbt-scala
@@ -162,14 +152,9 @@ modules:
       - workspaceContains:Cargo.lock
       - workspaceContains:*.rs
     packages:
-      - VisualStudioExptTeam.vscodeintellicode
-      - VisualStudioExptTeam.intellicode-api-usage-examples
-      - hbenl.vscode-test-explorer
-      - ms-vscode.test-adapter-converter
       - rust-lang.rust-analyzer
       - swellaby.vscode-rust-test-adapter
       - tamasfe.even-better-toml
-      - bungcip.better-toml
       - serayuzgur.crates
       - vadimcn.vscode-lldb
 
